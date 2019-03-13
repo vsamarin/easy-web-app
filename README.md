@@ -1,2 +1,2 @@
 # easy-web-app
-Web-application: reasteasy+swagger-ui 
+Web-application: resteasy+swagger-ui 
