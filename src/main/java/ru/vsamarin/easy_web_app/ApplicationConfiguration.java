@@ -1,7 +1,7 @@
 package ru.vsamarin.easy_web_app;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import ru.vsamarin.easy_web_app.controller.UserController;
+import ru.vsamarin.easy_web_app.rest.UserController;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -19,7 +19,7 @@ public class ApplicationConfiguration extends Application {
         beanConfig.setBasePath("/rest");
         beanConfig.setTitle("Easy REST Application");
         beanConfig.setDescription("Swagger-UI compatible");
-        beanConfig.setResourcePackage("ru.vsamarin.easy_web_app.controller");
+        beanConfig.setResourcePackage("ru.vsamarin.easy_web_app.rest");
         beanConfig.setScan(true);
     }
 

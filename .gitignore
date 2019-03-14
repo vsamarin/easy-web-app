@@ -1,7 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 /.idea/
-src/main/resources/
 src/test/
 target/
-/.idea/misc.xml
-/.idea/vcs.xml
