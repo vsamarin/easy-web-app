@@ -35,7 +35,7 @@ public class UserController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDto getById(Long id) {
+    public UserDto getById(@PathParam("id") Long id) {
         return service.getById(id);
     }
 }
