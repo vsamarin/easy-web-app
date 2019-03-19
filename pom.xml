@@ -14,7 +14,7 @@
         <swagger-version>1.5.8</swagger-version>
         <lombok.version>1.16.16</lombok.version>
         <reseasy.version>3.0.26.Final</reseasy.version>
-        <jetty.version>9.4.3.v20170317</jetty.version>
+        <jetty.version>9.4.11.v20180605</jetty.version>
         <sqlite.version>3.23.1</sqlite.version>
         <sqlite-dialect.version>1.0</sqlite-dialect.version>
         <hibernate.version>5.3.6.Final</hibernate.version>
