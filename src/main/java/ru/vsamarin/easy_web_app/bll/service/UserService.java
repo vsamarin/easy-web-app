@@ -39,4 +39,23 @@ public class UserService extends ServiceBase {
         List<UserDto> dtoList = converter.convert(Collections.singletonList(entity));
         return dtoList.get(0);
     }
+
+    public UserDto save(UserDto dto) {
+        UserEntity entity;
+        if (dto.getId() == null) {
+            entity = new UserEntity();
+        } else {
+            entity = repository.getById(dto.getId());
+        }
+        entity.setLogin(dto.getLogin());
+        entity.setEmail(dto.getEmail());
+        entity.setTitle(dto.getTitle());
+        entity = repository.save(entity);
+        List<UserDto> dtoList = converter.convert(Collections.singletonList(entity));
+        return dtoList.get(0);
+    }
+
+    public void delete(Long id) {
+        repository.delete(id);
+    }
 }

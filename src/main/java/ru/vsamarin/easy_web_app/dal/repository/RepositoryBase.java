@@ -6,6 +6,7 @@ import ru.vsamarin.easy_web_app.dal.filter.CriteriaQueryContainer;
 import ru.vsamarin.easy_web_app.dal.filter.FilterBase;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,7 +29,6 @@ public abstract class RepositoryBase<TEntity extends EntityBase> {
     protected Class<TEntity> getEntityClass() {
         return entityClass;
     }
-
 
     @SuppressWarnings("unchecked")
     public long getCount(FilterBase<TEntity> filter) {
@@ -121,6 +121,81 @@ public abstract class RepositoryBase<TEntity extends EntityBase> {
         try {
             em = em();
             return em().find(getEntityClass(), id);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    public TEntity save(TEntity entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity is null");
+        }
+        EntityManager em = null;
+        EntityTransaction etx = null;
+        try {
+            em = em();
+            etx = em.getTransaction();
+            etx.begin();
+            TEntity newEntity = em.merge(entity);
+            etx.commit();
+            return newEntity;
+        } catch (Exception e) {
+            if (etx != null && etx.isActive()) {
+                etx.rollback();
+            }
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+        return null;
+    }
+
+    public void delete(TEntity entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity is null");
+        }
+        EntityManager em = null;
+        EntityTransaction etx = null;
+        try {
+            em = em();
+            etx = em.getTransaction();
+            etx.begin();
+            em.remove(entity);
+            etx.commit();
+        } catch (Exception e) {
+            if (etx != null && etx.isActive()) {
+                etx.rollback();
+            }
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("entity id is null");
+        }
+        EntityManager em = null;
+        EntityTransaction etx = null;
+        try {
+            em = em();
+            etx = em.getTransaction();
+            etx.begin();
+            TEntity entity = em.find(getEntityClass(), id);
+            if (entity == null) {
+                throw new IllegalArgumentException(String.format("entity with id %s not found", id));
+            }
+            em.remove(entity);
+            etx.commit();
+        } catch (Exception e) {
+            if (etx != null && etx.isActive()) {
+                etx.rollback();
+            }
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();

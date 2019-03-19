@@ -1,6 +1,8 @@
 package ru.vsamarin.easy_web_app.rest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import ru.vsamarin.easy_web_app.bll.dto.ListDto;
 import ru.vsamarin.easy_web_app.bll.service.UserService;
 import ru.vsamarin.easy_web_app.bll.dto.UserDto;
@@ -8,6 +10,7 @@ import ru.vsamarin.easy_web_app.dal.filter.UserFilter;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/user")
 @Api(value = "UserController")
@@ -32,10 +35,31 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/get/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public UserDto getById(@PathParam("id") Long id) {
         return service.getById(id);
+    }
+
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserDto save(UserDto dto) {
+        return service.save(dto);
+    }
+
+    @DELETE
+    @Path("/delete/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 204, message = "Not found")
+    })
+    public Response delete(@PathParam("id") Long id) {
+        service.delete(id);
+        return Response.ok().build();
     }
 }

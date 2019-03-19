@@ -3,8 +3,10 @@ package ru.vsamarin.easy_web_app.bll.dto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class UserDto extends DtoBase {
     private String login;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-    <persistence-unit name="application-persistence-unit">
+    <persistence-unit name="application-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <description>Application connection</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/ApplicationDataSource</jta-data-source>
