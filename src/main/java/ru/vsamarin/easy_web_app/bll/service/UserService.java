@@ -4,6 +4,8 @@ import ru.vsamarin.easy_web_app.bll.converter.Converter;
 import ru.vsamarin.easy_web_app.bll.converter.UserDtoListConverter;
 import ru.vsamarin.easy_web_app.bll.dto.ListDto;
 import ru.vsamarin.easy_web_app.bll.dto.UserDto;
+import ru.vsamarin.easy_web_app.bll.validator.IdValidator;
+import ru.vsamarin.easy_web_app.bll.validator.UserDtoValidator;
 import ru.vsamarin.easy_web_app.dal.entity.UserEntity;
 import ru.vsamarin.easy_web_app.dal.filter.UserFilter;
 import ru.vsamarin.easy_web_app.dal.repository.RepositoryBase;
@@ -25,7 +27,7 @@ public class UserService extends ServiceBase {
         return new ListDto<>(total, dtoList);
     }
 
-    public ListDto<UserDto> getList(UserFilter filter) {
+    public ListDto<UserDto> getList(UserFilter filter) throws ApiException {
         Long total = repository.getCount(filter);
         List<UserEntity> entityList = repository.getList(filter);
         List<UserDto> dtoList = converter.convert(entityList);
@@ -33,6 +35,7 @@ public class UserService extends ServiceBase {
     }
 
     public UserDto getById(Long id) throws ApiException {
+        validate(id, new IdValidator());
         UserEntity entity = repository.getById(id);
         if (entity == null) {
             throw new ApiException(ApiException.Type.NO_FOUND, String.format("entity with id \"%s\" not found", id));
@@ -41,7 +44,8 @@ public class UserService extends ServiceBase {
         return dtoList.get(0);
     }
 
-    public UserDto save(UserDto dto) {
+    public UserDto save(UserDto dto) throws ApiException {
+        validate(dto, new UserDtoValidator());
         UserEntity entity;
         if (dto.getId() == null) {
             entity = new UserEntity();
@@ -57,6 +61,7 @@ public class UserService extends ServiceBase {
     }
 
     public void delete(Long id) throws ApiException {
+        validate(id, new IdValidator());
         UserEntity entity = repository.getById(id);
         if (entity == null) {
             throw new ApiException(ApiException.Type.NO_FOUND, String.format("entity with id \"%s\" not found", id));

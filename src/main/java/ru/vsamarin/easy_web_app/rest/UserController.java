@@ -31,7 +31,7 @@ public class UserController {
     @Path("/list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ListDto<UserDto> list(UserFilter filter) {
+    public ListDto<UserDto> list(UserFilter filter) throws ApiException {
         return service.getList(filter);
     }
 
@@ -41,7 +41,8 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 204, message = "Not found")
+            @ApiResponse(code = 204, message = "Not found"),
+            @ApiResponse(code = 400, message = "Bad Request")
     })
     public UserDto getById(@PathParam("id") Long id) throws ApiException {
         return service.getById(id);
@@ -51,7 +52,11 @@ public class UserController {
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDto save(UserDto dto) {
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request")
+    })
+    public UserDto save(UserDto dto) throws ApiException {
         return service.save(dto);
     }
 
@@ -61,7 +66,8 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 204, message = "Not found")
+            @ApiResponse(code = 204, message = "Not found"),
+            @ApiResponse(code = 400, message = "Bad Request")
     })
     public Response delete(@PathParam("id") Long id) throws ApiException {
         service.delete(id);
