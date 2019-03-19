@@ -2,6 +2,7 @@ package ru.vsamarin.easy_web_app;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import ru.vsamarin.easy_web_app.rest.UserController;
+import ru.vsamarin.easy_web_app.rest.exception.ApiExceptionMapper;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -36,6 +37,8 @@ public class ApplicationConfiguration extends Application {
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         /* services */
         classes.add(UserController.class);
+        /* mappers*/
+        classes.add(ApiExceptionMapper.class);
     }
 
 }

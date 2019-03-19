@@ -14,6 +14,7 @@ public class UserDto extends DtoBase {
     private String email;
 
     @Builder
+    @SuppressWarnings("unused")
     public UserDto(Long id, String login, String title, String email) {
         this.id = id;
         this.login = login;

@@ -176,30 +176,4 @@ public abstract class RepositoryBase<TEntity extends EntityBase> {
         }
     }
 
-    public void delete(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("entity id is null");
-        }
-        EntityManager em = null;
-        EntityTransaction etx = null;
-        try {
-            em = em();
-            etx = em.getTransaction();
-            etx.begin();
-            TEntity entity = em.find(getEntityClass(), id);
-            if (entity == null) {
-                throw new IllegalArgumentException(String.format("entity with id %s not found", id));
-            }
-            em.remove(entity);
-            etx.commit();
-        } catch (Exception e) {
-            if (etx != null && etx.isActive()) {
-                etx.rollback();
-            }
-        } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
-        }
-    }
 }

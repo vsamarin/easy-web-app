@@ -8,6 +8,7 @@ import ru.vsamarin.easy_web_app.dal.entity.UserEntity;
 import ru.vsamarin.easy_web_app.dal.filter.UserFilter;
 import ru.vsamarin.easy_web_app.dal.repository.RepositoryBase;
 import ru.vsamarin.easy_web_app.dal.repository.UserRepository;
+import ru.vsamarin.easy_web_app.rest.exception.ApiException;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,10 +32,10 @@ public class UserService extends ServiceBase {
         return new ListDto<>(total, dtoList);
     }
 
-    public UserDto getById(Long id) {
+    public UserDto getById(Long id) throws ApiException {
         UserEntity entity = repository.getById(id);
         if (entity == null) {
-            return null;
+            throw new ApiException(ApiException.Type.NO_FOUND, String.format("entity with id \"%s\" not found", id));
         }
         List<UserDto> dtoList = converter.convert(Collections.singletonList(entity));
         return dtoList.get(0);
@@ -55,7 +56,11 @@ public class UserService extends ServiceBase {
         return dtoList.get(0);
     }
 
-    public void delete(Long id) {
-        repository.delete(id);
+    public void delete(Long id) throws ApiException {
+        UserEntity entity = repository.getById(id);
+        if (entity == null) {
+            throw new ApiException(ApiException.Type.NO_FOUND, String.format("entity with id \"%s\" not found", id));
+        }
+        repository.delete(entity);
     }
 }

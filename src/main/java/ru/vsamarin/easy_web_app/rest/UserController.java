@@ -7,6 +7,7 @@ import ru.vsamarin.easy_web_app.bll.dto.ListDto;
 import ru.vsamarin.easy_web_app.bll.service.UserService;
 import ru.vsamarin.easy_web_app.bll.dto.UserDto;
 import ru.vsamarin.easy_web_app.dal.filter.UserFilter;
+import ru.vsamarin.easy_web_app.rest.exception.ApiException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -38,7 +39,11 @@ public class UserController {
     @Path("/get/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDto getById(@PathParam("id") Long id) {
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 204, message = "Not found")
+    })
+    public UserDto getById(@PathParam("id") Long id) throws ApiException {
         return service.getById(id);
     }
 
@@ -58,7 +63,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "Not found")
     })
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") Long id) throws ApiException {
         service.delete(id);
         return Response.ok().build();
     }
